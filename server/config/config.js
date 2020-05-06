@@ -11,6 +11,23 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'dev';
 
 
 // ============================
+//  Expiración del Token
+// ============================
+/**
+ * 60 Segundos
+ * 60 Minutos
+ * 24 Horas
+ * 30 Días
+ */
+process.env.EXPIRY_TOKEN = 60 * 60 * 24 * 30;
+
+// ============================
+//  SEED de Autenticación
+// ============================
+
+process.env.SEED = process.env.SEED || 'este-es-el-seed-desarrollo';
+
+// ============================
 //  Data Base
 // ============================
 

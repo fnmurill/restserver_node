@@ -2,21 +2,19 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const _ = require('underscore');
 const User = require('../models/user');
+const { checkToken, checkAdminRole } = require('../middlewares/authentication')
 
 const app = express();
 
 
-
-app.get('/user', function(req, res) {
-
-
+/**Obtenemos todos los Usuarios registrados */
+app.get('/user', [checkToken, checkAdminRole], (req, res) => {
 
     let since = req.query.since || 0;
     since = Number(since);
 
     let limit = req.query.limit || 5;
     limit = Number(limit);
-
 
     User.find({ status: true }, 'name email role status google role img') /** como segundo parametro mandamos las exclusiones */
         .skip(since)
@@ -39,7 +37,9 @@ app.get('/user', function(req, res) {
         });
 });
 
-app.post('/user', function(req, res) {
+
+/**Registramos un Usuario */
+app.post('/user', [checkToken, checkAdminRole], function(req, res) {
 
     const body = req.body;
 
@@ -65,7 +65,9 @@ app.post('/user', function(req, res) {
     });
 });
 
-app.put('/user/:id', function(req, res) {
+/**Obtenemos un usuario en especifico por su id en DB */
+
+app.put('/user/:id', [checkToken, checkAdminRole], function(req, res) {
 
     const id = req.params.id;
     const body = _.pick(req.body, ['name', 'email', 'img', 'role', 'status']);
@@ -84,7 +86,8 @@ app.put('/user/:id', function(req, res) {
     });
 });
 
-app.delete('/user/:id', function(req, res) {
+/**Eliminamos (cambiamos el estado de un Usuario) en la DB */
+app.delete('/user/:id', [checkToken, checkAdminRole], function(req, res) {
     const id = req.params.id;
     let changeStatus = {
             status: false
