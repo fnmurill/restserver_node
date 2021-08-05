@@ -19,4 +19,7 @@
         "mongoose-unique-validator": "^2.0.3",
         "underscore": "^1.10.2"
     }
+    "devDependencies": {
+  "mquery": ">=3.2.3"
+}
 }
